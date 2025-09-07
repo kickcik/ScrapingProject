@@ -9,6 +9,9 @@ readme = "README.md"
 python = "^3.13"
 fastapi = "^0.116.1"
 tortoise-orm = {version = "^0.25.1", extras = ["asyncmy"]}
+python-dotenv = "^1.1.1"
+pydantic-settings = "2.10.1"
+aerich = "0.9.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -28,3 +31,7 @@ line-length = 120
 plugins = ['pydantic.mypy']
 python_version = 3.13
 strict = true
+[tool.aerich]
+tortoise_orm = "app.configs.database.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
