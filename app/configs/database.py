@@ -6,11 +6,11 @@ from app.configs import config
 
 TORTOISE_APP_MODELS = [
     "app.models.users",
-    'app.models.quotes',
-    'app.models.questions',
-    'app.models.diaries',
-    'app.models.bookmarks',
-    'aerich.models',
+    "app.models.quotes",
+    "app.models.questions",
+    "app.models.diaries",
+    "app.models.bookmarks",
+    "aerich.models",
 ]
 
 TORTOISE_ORM = {
