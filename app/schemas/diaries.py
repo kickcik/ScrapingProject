@@ -17,3 +17,5 @@ class DiaryResponse(BaseModel):
     title: str
     content: str
     user_id: int
+
+    model_config = {"from_attributes": True}
