@@ -10,6 +10,8 @@ TORTOISE_APP_MODELS = [
     "app.models.questions",
     "app.models.diaries",
     "app.models.bookmarks",
+    "app.models.token_blacklist",
+    "app.models.user_questions",
     "aerich.models",
 ]
 
