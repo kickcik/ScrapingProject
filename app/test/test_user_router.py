@@ -47,6 +47,29 @@ class TestUserRouter(TestCase):
             )
         self.assertEqual(200, user_create_response.status_code)
 
+    async def test_api_create_user_exist(self) -> None:
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app),
+            base_url="http://test",
+        ) as client:
+            await client.post(
+                "/users/register",
+                json={
+                    "username": "tester",
+                    "password": "1234",
+                },
+            )
+            user_create_response = await client.post(
+                "/users/register",
+                json={
+                    "username": "tester",
+                    "password": "4321",
+                },
+            )
+        self.assertEqual(400, user_create_response.status_code)
+        response_body = user_create_response.json()
+        self.assertEqual("User already exists", response_body["detail"])
+
     async def test_api_login_user(self) -> None:
         async with httpx.AsyncClient(
             transport=httpx.ASGITransport(app=app),
