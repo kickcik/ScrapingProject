@@ -22,7 +22,7 @@ class TestUserRouter(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         initializer(
-            ["app.models.users"],  # 모델이 정의된 모듈 경로
+            ["app.models.users", "app.models.token_blacklist"],  # 모델이 정의된 모듈 경로
             db_url=DB_URL,  # 메모리 DB 사용
         )
         super().setUpClass()
@@ -94,3 +94,29 @@ class TestUserRouter(TestCase):
         self.assertIsNotNone(response_body["access_token"])
         self.assertIsNotNone(response_body["refresh_token"])
         self.assertIsNotNone(response_body["token_type"], "Bearer")
+
+    async def test_api_logout_user(self) -> None:
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app),
+            base_url="http://test",
+        ) as client:
+            await client.post(
+                "/users/register",
+                json={
+                    "username": "tester",
+                    "password": "1234",
+                },
+            )
+            login_response = await client.post(
+                "/users/login",
+                data={
+                    "username": "tester",
+                    "password": "1234",
+                },
+            )
+            access_token = login_response.json()["access_token"]
+
+            logout_response = await client.post("/users/logout", headers={"Authorization": f"Bearer {access_token}"})
+        self.assertEqual(200, logout_response.status_code)
+        response_body = logout_response.json()
+        self.assertEqual("Successfully logged out", response_body["message"])
