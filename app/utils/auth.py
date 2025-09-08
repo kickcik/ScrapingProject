@@ -7,6 +7,7 @@ from passlib.context import CryptContext  # type: ignore
 from starlette import status
 
 from app.configs import config
+from app.models.token_blacklist import TokenBlacklist
 from app.models.users import User
 from app.utils.jwt import oauth2_scheme
 
@@ -19,10 +20,14 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Use
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    if await TokenBlacklist.filter(token=token).exists():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token is blacklisted")
+
     try:
         assert config.JWT_ALGORITHM is not None
         payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
-        user_id = payload.get("user_id")
+        user_id = payload.get("sub")
         if user_id is None:
             raise credentials_exception
     except InvalidTokenError:
