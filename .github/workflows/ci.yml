@@ -61,7 +61,8 @@ jobs:
       MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
       MYSQL_USER: ${{ secrets.MYSQL_USER }}
       MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      MYSQL_DATABASE: ${{ secrets.MYSQL_DB }}
+      MYSQL_TEST_DB: ${{ secrets.MYSQL_TEST_DB }}
       MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
       SECRET_KEY: ${{ secrets.SECRET_KEY}}
       JWT_ALGORITHM: ${{ secrets.JWT_ALGORITHM}}
