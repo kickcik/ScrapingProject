@@ -11,6 +11,7 @@ class Config(BaseSettings):
 
     JWT_ALGORITHM: str | None = os.getenv("JWT_ALGORITHM")
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES"))  # type: ignore[arg-type]
+    JWT_REFRESH_TOKEN_EXPIRE_DAY: int = int(os.getenv("JWT_REFRESH_TOKEN_EXPIRE_DAY"))  # type: ignore[arg-type]
 
     MYSQL_HOST: str | None = os.getenv("MYSQL_HOST")
     MYSQL_PORT: int = int(os.getenv("MYSQL_PORT"))  # type: ignore[arg-type]
