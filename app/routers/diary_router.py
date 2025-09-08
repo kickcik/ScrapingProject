@@ -10,13 +10,31 @@ from app.utils.auth import get_current_user
 diary_router = APIRouter(prefix="/diaries", tags=["diaries"])
 
 
+@diary_router.get("/{diary_id}", status_code=200)
+async def get_diary(diary_id: int, user: User = Depends(get_current_user)) -> DiaryResponse:
+    if not (diary := await Diary.get_or_none(id=diary_id)):
+        raise HTTPException(status_code=404, detail="Diary not found")
+    if diary.user_id != user.id:  # type: ignore[attr-defined]
+        raise HTTPException(status_code=403, detail="You are not authorized to view this diary")
+
+    return DiaryResponse.model_validate(diary)
+
+
+@diary_router.get("", status_code=200)
+async def get_diaries(user: User = Depends(get_current_user)) -> list[DiaryResponse]:
+    if not (diaries := await Diary.filter(user_id=user.id)):
+        raise HTTPException(status_code=404, detail="Not found")
+
+    return [DiaryResponse.model_validate(diary) for diary in diaries]
+
+
 @diary_router.post("/create", status_code=201)
 async def create_diary(diary_data: CreateDiaryRequest, user: User = Depends(get_current_user)) -> DiaryResponse:
     try:
         new_diary = await Diary.create(title=diary_data.title, content=diary_data.content, user=user)
     except IntegrityError:
         raise HTTPException(status_code=400, detail="invalid diary")
-    return DiaryResponse.model_validate(new_diary)
+    return DiaryResponse.model_validate(new_diary, from_attributes=True)
 
 
 @diary_router.patch("/update", status_code=200)
