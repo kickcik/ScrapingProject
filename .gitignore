@@ -1,3 +1,5 @@
 .idea/
 .dmypy.json
 .env
+.coverage
+__pycache__
