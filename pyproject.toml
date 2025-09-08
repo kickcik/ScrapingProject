@@ -40,7 +40,11 @@ line-length = 120
 plugins = ['pydantic.mypy']
 python_version = 3.13
 strict = true
+
 [tool.aerich]
 tortoise_orm = "app.configs.database.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
+
+[tool.coverage.run]
+omit = ["*/test_*.py"]
