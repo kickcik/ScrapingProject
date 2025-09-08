@@ -1,0 +1,32 @@
+from datetime import datetime, timedelta, timezone
+
+import jwt
+from fastapi.security import OAuth2PasswordBearer
+
+from app.configs import config
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+def create_access_token(data: dict[str, int | str | datetime], expires_delta: timedelta | None = None) -> str:
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+
+    encoded_jwt = jwt.encode(to_encode, config.SECRET_KEY, algorithm=config.JWT_ALGORITHM)
+    return encoded_jwt
+
+
+def create_refresh_token(data: dict[str, int | str | datetime], expires_delta: timedelta | None = None) -> str:
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(days=config.JWT_REFRESH_TOKEN_EXPIRE_DAY)
+    to_encode.update({"exp": expire})
+
+    encoded_jwt = jwt.encode(to_encode, config.SECRET_KEY, algorithm=config.JWT_ALGORITHM)
+    return encoded_jwt
