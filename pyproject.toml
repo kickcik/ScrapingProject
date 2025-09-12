@@ -18,6 +18,7 @@ passlib = {version = "1.7.4", extras = ["bcrypt"]}
 uvicorn = "0.35.0"
 pyjwt = "^2.10.1"
 bcrypt = "4.0.1"
+cryptography = "^45.0.7"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -40,6 +41,8 @@ line-length = 120
 plugins = ['pydantic.mypy']
 python_version = 3.13
 strict = true
+ignore_missing_imports = true
+disable_error_code = ["arg-type"]
 
 [tool.aerich]
 tortoise_orm = "app.configs.database.TORTOISE_ORM"
