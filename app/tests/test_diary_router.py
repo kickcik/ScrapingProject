@@ -18,15 +18,14 @@ MYSQL_TEST_DB = os.getenv("MYSQL_TEST_DB")  # 테스트 전용 DB 권장
 DB_URL = f"mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_TEST_DB}"
 
 
-class TestUserRouter(TestCase):
+class TestDiaryRouter(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         initializer(
-            ["app.models.diaries", "app.models.users", "app.models.token_blacklist"],  # 모델이 정의된 모듈 경로
+            ["app.models.users", "app.models.token_blacklist", "app.models.diaries"],  # 모델이 정의된 모듈 경로
             db_url=DB_URL,  # 메모리 DB 사용
         )
         super().setUpClass()
-        print(DB_URL)
 
     @classmethod
     def tearDownClass(cls) -> None:

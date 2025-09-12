@@ -26,7 +26,6 @@ class TestUserRouter(TestCase):
             db_url=DB_URL,  # 메모리 DB 사용
         )
         super().setUpClass()
-        print(DB_URL)
 
     @classmethod
     def tearDownClass(cls) -> None:
