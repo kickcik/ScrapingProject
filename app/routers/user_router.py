@@ -4,7 +4,7 @@ from typing import Annotated
 import jwt
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from passlib.hash import bcrypt  # type: ignore
+from passlib.hash import bcrypt
 from tortoise.exceptions import IntegrityError
 
 from app.configs import config
