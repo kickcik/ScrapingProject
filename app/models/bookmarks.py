@@ -15,3 +15,4 @@ class Bookmark(BaseModel, Model):
 
     class Meta:
         table = "bookmarks"
+        unique_together = ("user", "quote")
