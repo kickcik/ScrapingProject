@@ -1,6 +1,5 @@
-from sqlite3 import IntegrityError
-
 from fastapi import APIRouter, Depends, HTTPException
+from tortoise.exceptions import IntegrityError
 
 from app.models.diaries import Diary
 from app.models.users import User
