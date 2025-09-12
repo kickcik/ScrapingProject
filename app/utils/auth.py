@@ -3,7 +3,7 @@ from typing import Annotated
 import jwt
 from fastapi import Depends, HTTPException
 from jwt import InvalidTokenError
-from passlib.context import CryptContext  # type: ignore
+from passlib.context import CryptContext
 from starlette import status
 
 from app.configs import config
@@ -26,7 +26,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Use
 
     try:
         assert config.JWT_ALGORITHM is not None
-        payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.JWT_ALGORITHM])
+        payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.JWT_ALGORITHM])  # type: ignore[arg-type]
         user_id = payload.get("sub")
         if user_id is None:
             raise credentials_exception
