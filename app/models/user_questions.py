@@ -5,8 +5,7 @@ from app.models.questions import Question
 from app.models.users import User
 
 
-# id, user_id(FK), question_id(FK)
-class UserQuestions(BaseModel, Model):
+class UserQuestion(BaseModel, Model):
     user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
         "models.User", related_name="questions", on_delete=fields.CASCADE
     )
